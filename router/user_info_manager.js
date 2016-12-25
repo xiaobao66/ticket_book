@@ -113,14 +113,14 @@ userInfoManager.post('/rest/user_info_manager_delete', function (req, res) {
     });
 });
 
-//修改用户信息(修改密码)
+//修改用户信息
 userInfoManager.post('/rest/user_info_manager_edit', function (req, res) {
     var updateUserInfoSql = "UPDATE user_info\n" +
-        "SET `password` = ?\n" +
+        "SET sex = ?, telephone = ?, `password` =?\n" +
         "WHERE\n" +
-        "	username = ?";
+        "	`id` = ?";
 
-    db.query(updateUserInfoSql, [req.body.password, req.body.username]).then(function (result, fields) {
+    db.query(updateUserInfoSql, [req.body.sex, req.body.telephone, req.body.password, req.body.id]).then(function (result, fields) {
         res.json({
             flag: 1,
             userInfo: req.body
