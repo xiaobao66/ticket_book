@@ -183,6 +183,26 @@ ticketBookManager.post('/rest/ticket_book_manager_delete', function (req, res) {
     });
 });
 
+//修改车票信息
+ticketBookManager.post('/rest/ticket_book_manager_edit', function (req, res) {
+    var updateTicketBookSql = "UPDATE ticket_setting\n" +
+        "SET departure = ?, destination = ?, departure_time = ?, arrive_time = ?, price = ?, amount = ?\n" +
+        "WHERE\n" +
+        "	ticket_id = ?";
+
+    db.query(updateTicketBookSql, [req.body.departureId, req.body.destinationId, req.body.departure_time, req.body.arrive_time, req.body.price, req.body.amount, req.body.ticket_id]).then(function (result, fields) {
+        res.json({
+            flag: 1,
+            ticketBook: req.body
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
+});
+
 module.exports = {
     config: function (dbConfig) {
         db = dbConfig;

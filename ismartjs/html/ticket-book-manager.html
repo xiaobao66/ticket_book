@@ -118,4 +118,10 @@
             });
         });
     }
+
+    function editTicketBook(s) {
+        S.popupOpen('popup/ticket-book-manager-edit.html', {ticketBook: s.parent().data()}).done(function (ticketBook) {
+            ticketBook && s.parent().data(ticketBook);
+        })
+    }
 </script>
