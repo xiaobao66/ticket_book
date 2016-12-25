@@ -8,32 +8,32 @@ userInfoManager.get('/rest/user_info_manager', function (req, res) {
     var totalUserInfoSql = "SELECT\n" +
         "	COUNT(*) total\n" +
         "FROM\n" +
-        "	user_info,\n" +
-        "	teacher_info\n" +
+        "	user_info\n" +
         "WHERE\n" +
-        "	user_info.teacher_id = teacher_info.teacher_id";
+        "	1 = 1";
 
     var userInfoSql = "SELECT\n" +
+        "	`id`,\n" +
         "	username,\n" +
         "	`password`,\n" +
-        "	flag,\n" +
-        "	teacher_info.teacher_id,\n" +
-        "	`name`\n" +
+        "	`name`,\n" +
+        "	sex,\n" +
+        "	telephone,\n" +
+        "	flag\n" +
         "FROM\n" +
-        "	user_info,\n" +
-        "	teacher_info\n" +
+        "	user_info\n" +
         "WHERE\n" +
-        "	user_info.teacher_id = teacher_info.teacher_id";
+        "	1 = 1";
 
-    if (req.query.teacherId) {
-        totalUserInfoSql += ' AND user_info.teacher_id LIKE ' + "'%" + req.query.teacherId + "%'";
-        userInfoSql += ' AND user_info.teacher_id LIKE ' + "'%" + req.query.teacherId + "%'";
-    } else if (req.query.teacherName) {
-        totalUserInfoSql += ' AND teacher_info.`name` LIKE ' + "'%" + req.query.teacherName + "%'";
-        userInfoSql += ' AND teacher_info.`name` LIKE ' + "'%" + req.query.teacherName + "%'";
+    if (req.query.username) {
+        totalUserInfoSql += ' AND username LIKE ' + "'%" + req.query.username + "%'";
+        userInfoSql += ' AND username LIKE ' + "'%" + req.query.username + "%'";
+    } else if (req.query.name) {
+        totalUserInfoSql += ' AND `name` LIKE ' + "'%" + req.query.name + "%'";
+        userInfoSql += ' AND `name` LIKE ' + "'%" + req.query.name + "%'";
     }
 
-    userInfoSql += ' ORDER BY CONVERT (teacher_info.teacher_id, SIGNED) ASC';
+    userInfoSql += ' ORDER BY `id` ASC';
     userInfoSql += ' LIMIT ' + (req.query.page - 1) * req.query.pageSize + ', ' + req.query.pageSize;
 
     var data = {
@@ -47,11 +47,13 @@ userInfoManager.get('/rest/user_info_manager', function (req, res) {
             data.results = [];
             for (var i = 0; i < result.length; i++) {
                 data.results[i] = {
-                    teacher_id: result[i].teacher_id,
-                    teacher_name: result[i].name,
+                    id: result[i].id,
+                    name: result[i].name,
                     flag: result[i].flag,
                     username: result[i].username,
-                    password: result[i].password
+                    password: result[i].password,
+                    sex: result[i].sex,
+                    telephone: result[i].telephone
                 }
             }
             res.json(data);

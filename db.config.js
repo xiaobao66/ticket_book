@@ -6,5 +6,5 @@ module.exports = {
     port: '3306',
     user: 'root',
     password: 'root',
-    database: 'teacher_management'
+    database: 'ticket_book'
 };

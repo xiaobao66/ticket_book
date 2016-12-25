@@ -90,6 +90,6 @@ teacherTeachClassManager.config(db);
 app.use('/', teacherTeachClassManager.teacherTeachClassManager);
 
 //启动express服务器
-app.listen('3000', function () {
+app.listen('3001', function () {
     console.log('server started');
 });

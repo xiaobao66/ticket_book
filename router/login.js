@@ -13,7 +13,7 @@ login.get('/rest/login/check', function (req, res) {
                 loginFlag: true,
                 username: loginRecord[loginId].username,
                 flag: loginRecord[loginId].flag,
-                teacherId: loginRecord[loginId].teacherId
+                userId: loginRecord[loginId].userId
             });
         } else {
             res.json({
@@ -45,11 +45,11 @@ login.post('/rest/login', function (req, res) {
                 loginFlag: -2
             });
         } else {
-            var loginId = Math.random() + '' + result[0].user_id;
+            var loginId = Math.random() + '' + result[0].id;
             loginRecord[loginId] = {
                 username: username,
                 flag: result[0].flag,
-                teacherId: result[0]['teacher_id'] ? result[0]['teacher_id'] : ''
+                userId: result[0]['id'] ? result[0]['id'] : ''
             };
             // console.log(loginRecord);
             res.cookie('loginId', loginId, {
@@ -59,7 +59,7 @@ login.post('/rest/login', function (req, res) {
                 loginFlag: 1,
                 username: username,
                 flag: result[0].flag,
-                teacherId: result[0]['teacher_id'] ? result[0]['teacher_id'] : ''
+                userId: result[0]['id'] ? result[0]['id'] : ''
             });
         }
     });

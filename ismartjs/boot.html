@@ -5,7 +5,7 @@
 <div id="loginDiv" class="login-window">
     <div class="modal-content" style="width: 500px; margin: 90px auto;">
         <div class="modal-header">
-            <h4 class="modal-title" s-ui-dialog-role="title">教师管理系统登录</h4>
+            <h4 class="modal-title" s-ui-dialog-role="title">订票管理系统登录</h4>
         </div>
         <div class="modal-body" s-ui-dialog-role="body" id="loginPanel" s="window"></div>
     </div>
@@ -24,7 +24,7 @@
             if (rs.loginFlag) {
                 Page.Main.username = rs.username;
                 Page.Main.flag = rs.flag;
-                Page.Main.teacherId = rs.teacherId;
+                Page.Main.userId = rs.userId;
                 mainWindow.load('layouts/main0.html', Page);
                 loginDiv.remove();
             } else {
@@ -34,7 +34,7 @@
                     if (rs) {
                         Page.Main.username = rs.username;
                         Page.Main.flag = rs.flag;
-                        Page.Main.teacherId = rs.teacherId;
+                        Page.Main.userId = rs.userId;
                         mainWindow.load('layouts/main0.html', Page);
                         loginDiv.remove();
                     }
