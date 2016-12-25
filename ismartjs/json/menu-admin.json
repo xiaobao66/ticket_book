@@ -7,9 +7,20 @@
       {
         "id": "user_info_manager",
         "title": "用户基本信息管理",
-        "icon": "fa fa-file",
         "url": "html/user-info-manager.html",
         "open": true
+      }
+    ]
+  },
+  {
+    "id": "user_ticket_book_manager",
+    "title": "用户订票管理",
+    "icon": "fa fa-home",
+    "children": [
+      {
+        "id": "ticket_city_manager",
+        "title": "车票城市管理",
+        "url": "html/ticket-city-manager.html"
       }
     ]
   }

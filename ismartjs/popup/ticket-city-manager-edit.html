@@ -1,0 +1,50 @@
+<meta title="修改城市信息" width="400px" args="ticketCity"/>
+<form class="form-horizontal"
+      id="ticketCityManagerForm"
+      s="form,valid,nda,datac" s-form="{action: submitTicketCityManagerForm}"
+      s-data="ticketCity"
+      style="padding-top: 30px;">
+    <div class="form-group" s-valid-role="item" style="display: none;">
+        <label class="col-sm-5 control-label">城市ID：</label>
+        <div class="col-sm-6">
+            <input type="hidden" name="city_id" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-5 control-label">城市名：</label>
+        <div class="col-sm-6">
+            <input type="text" name="cityName" class="form-control"
+                   s-valid-label="城市名" s-valid-error="require()"/>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    S.meta.btns = [
+        {
+            name: "保存",
+            style: "btn btn-primary",
+            click: function () {
+                return S.S("#ticketCityManagerForm").submit().done(function (rs) {
+                    if (rs.flag === 1) {
+                        S.close(rs.ticketCity);
+                        S.notice("修改城市信息成功", "success");
+                    } else {
+                        S.close();
+                        S.notice("修改城市信息失败" + rs.err.code, "danger");
+                    }
+                });
+            }
+        },
+        {
+            name: "关闭",
+            style: "btn btn-default",
+            click: function () {
+                S.close();
+            }
+        }
+    ];
+
+    function submitTicketCityManagerForm(data) {
+        return S.post('/rest/ticket_city_manager_edit', data);
+    }
+</script>
