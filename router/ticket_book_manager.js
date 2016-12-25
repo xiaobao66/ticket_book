@@ -144,6 +144,33 @@ ticketBookManager.post('/rest/ticket_book_manager_add', function (req, res) {
     });
 });
 
+//删除车票信息
+ticketBookManager.post('/rest/ticket_book_manager_delete', function (req, res) {
+    var deleteUserInfoSql = "DELETE\n" +
+        "FROM\n" +
+        "	ticket_setting\n" +
+        "WHERE\n" +
+        "	ticket_id IN ?";
+
+    var deleteData = JSON.parse(req.body.deleteData),
+        deleteId = [[]];
+
+    for (var i = 0, len = deleteData.length; i < len; i++) {
+        deleteId[0][i] = deleteData[i].ticket_id;
+    }
+
+    db.query(deleteUserInfoSql, [deleteId]).then(function (result, fields) {
+        res.json({
+            flag: 1
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
+});
+
 module.exports = {
     config: function (dbConfig) {
         db = dbConfig;

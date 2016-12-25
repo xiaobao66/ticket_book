@@ -97,4 +97,31 @@
             }
         });
     }
+
+    function deleteTicketBook() {
+        var checkedData = ticketBookGrid.getCheckedData();
+        var deleteData = [];
+
+        if (checkedData.length === 0) {
+            S.alert('请选择要删除的车票', 'warning');
+            return;
+        }
+
+        for (var i = 0; i < checkedData.length; i++) {
+            deleteData[i] = {
+                ticket_id: checkedData[i]['ticket_id']
+            }
+        }
+
+        S.confirm('确定要删除这些车票吗？').done(function () {
+            S.post('/rest/ticket_book_manager_delete', {deleteData: JSON.stringify(deleteData)}).done(function (rs) {
+                if (rs.flag === 1) {
+                    S.alert('删除车票成功', 'success');
+                    ticketBookGrid.refresh();
+                } else if (rs.flag === -1) {
+                    S.alert('删除车票失败，请重试', 'danger');
+                }
+            });
+        });
+    }
 </script>
