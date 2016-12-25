@@ -64,7 +64,8 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
         "	destination destinationId,\n" +
         "	t1.cityName departure,\n" +
         "	t2.cityName destination,\n" +
-        "	DATE_FORMAT(`time`, '%Y-%m-%d %H:%i') `time`,\n" +
+        "	DATE_FORMAT(departure_time, '%Y-%m-%d %H:%i') departure_time,\n" +
+        "	DATE_FORMAT(arrive_time, '%Y-%m-%d %H:%i') arrive_time,\n" +
         "	price,\n" +
         "	amount\n" +
         "FROM\n" +
@@ -85,11 +86,18 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
         ticketSettingSql += ' AND ticket_setting.destination = ' + req.query.destination;
     }
 
-    if (req.query.time) {
-        totalTicketSettingSql += ' AND ticket_setting.`time` >= "' + (req.query.time + " 00:00:00") + '"';
-        ticketSettingSql += ' AND ticket_setting.`time` >= "' + (req.query.time + " 00:00:00") + '"';
-        totalTicketSettingSql += ' AND ticket_setting.`time` <= "' + (req.query.time + " 23:59:59") + '"';
-        ticketSettingSql += ' AND ticket_setting.`time` <= "' + (req.query.time + " 23:59:59") + '"';
+    if (req.query['departure_time']) {
+        totalTicketSettingSql += ' AND ticket_setting.departure_time >= "' + (req.query['departure_time'] + " 00:00:00") + '"';
+        ticketSettingSql += ' AND ticket_setting.departure_time >= "' + (req.query['departure_time'] + " 00:00:00") + '"';
+        totalTicketSettingSql += ' AND ticket_setting.departure_time <= "' + (req.query['departure_time'] + " 23:59:59") + '"';
+        ticketSettingSql += ' AND ticket_setting.departure_time <= "' + (req.query['departure_time'] + " 23:59:59") + '"';
+    }
+
+    if (req.query['arrive_time']) {
+        totalTicketSettingSql += ' AND ticket_setting.arrive_time >= "' + (req.query['arrive_time'] + " 00:00:00") + '"';
+        ticketSettingSql += ' AND ticket_setting.arrive_time >= "' + (req.query['arrive_time'] + " 00:00:00") + '"';
+        totalTicketSettingSql += ' AND ticket_setting.arrive_time <= "' + (req.query['arrive_time'] + " 23:59:59") + '"';
+        ticketSettingSql += ' AND ticket_setting.arrive_time <= "' + (req.query['arrive_time'] + " 23:59:59") + '"';
     }
 
     totalTicketSettingSql += ' ORDER BY ticket_id ASC';
@@ -112,7 +120,8 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
                     destinationId: result[i].destinationId,
                     departure: result[i].departure,
                     destination: result[i]['destination'],
-                    time: result[i]['time'],
+                    departure_time: result[i]['departure_time'],
+                    arrive_time: result[i]['arrive_time'],
                     price: result[i].price,
                     amount: result[i].amount
                 }
@@ -127,14 +136,15 @@ ticketBookManager.post('/rest/ticket_book_manager_add', function (req, res) {
     var insertTicketBookSql = "INSERT INTO ticket_setting (\n" +
         "	departure,\n" +
         "	destination,\n" +
-        "	`time`,\n" +
+        "	departure_time,\n" +
+        "	arrive_time,\n" +
         "	price,\n" +
         "	amount\n" +
         ")\n" +
         "VALUES\n" +
-        "	(?,?,?,?,?)";
+        "	(?,?,?,?,?,?)";
 
-    db.query(insertTicketBookSql, [req.body.departure, req.body.destination, req.body.time, req.body.price, req.body.amount]).then(function (result, fields) {
+    db.query(insertTicketBookSql, [req.body.departure, req.body.destination, req.body['departure_time'], req.body['arrive_time'], req.body.price, req.body.amount]).then(function (result, fields) {
         res.json({
             flag: 1
         });

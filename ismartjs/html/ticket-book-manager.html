@@ -12,7 +12,8 @@
             class="form-control" style="width: 120px;">
         <option value="">目的地</option>
     </select>
-    <input type="text" placeholder="出发日期" class="form-control" name="time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
+    <input type="text" placeholder="出发日期" class="form-control" name="departure_time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
+    <input type="text" placeholder="出发日期" class="form-control" name="arrive_time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
     <input type="hidden" name="page" value="1" id="page"/>
     <input type="hidden" name="pageSize" value="20"/>
     <input type="submit" class="btn btn-success" value="查找"/>
@@ -29,9 +30,10 @@
         <th style="width: 10%;"><input type="checkbox" s-check-role="checkall-h"/></th>
         <th style="width: 15%;">出发地</th>
         <th style="width: 15%;">目的地</th>
-        <th style="width: 20%;">出发时间</th>
-        <th style="width: 15%;">票价(元)</th>
-        <th style="width: 15%;">剩余票数(张)</th>
+        <th style="width: 15%;">出发时间</th>
+        <th style="width: 15%;">到达时间</th>
+        <th style="width: 10%;">票价(元)</th>
+        <th style="width: 10%;">剩余票数(张)</th>
         <th style="width: 10%;text-align: center;">操作</th>
     </tr>
     </thead>
@@ -53,7 +55,8 @@
         <td s="" s-data-filter="'departure'"></td>
         <td s="" s-data-filter="'destinationId'" style="display: none;"></td>
         <td s="" s-data-filter="'destination'"></td>
-        <td s="" s-data-filter="'time'"></td>
+        <td s="" s-data-filter="'departure_time'"></td>
+        <td s="" s-data-filter="'arrive_time'"></td>
         <td s="" s-data-filter="'price'"></td>
         <td s="" s-data-filter="'amount'"></td>
         <td class="text-right" style="text-align: center;">
