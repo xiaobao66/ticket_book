@@ -9,7 +9,7 @@ var teacherWorkloadInfo = require('./router/teacher_workload_info');
 var teacherClassInfo = require('./router/teacher_class_info');
 var userInfoManager = require('./router/user_info_manager');
 var ticketCityManager = require('./router/ticket_city_manager');
-var teacherWorkloadInfoManager = require('./router/teacher_workload_info_manager');
+var ticketBookManager = require('./router/ticket_book_manager');
 var classInfoManager = require('./router/class_info_manager');
 var teacherTeachClassManager = require('./router/teacher_teach_class_manager');
 
@@ -72,9 +72,9 @@ app.use('/', userInfoManager.userInfoManager);
 ticketCityManager.config(db);
 app.use('/', ticketCityManager.ticketCityManager);
 
-//教师工作量路由处理
-teacherWorkloadInfoManager.config(db);
-app.use('/', teacherWorkloadInfoManager.teacherWorkloadInfoManager);
+//车票信息路由处理
+ticketBookManager.config(db);
+app.use('/', ticketBookManager.ticketBookManager);
 
 //课程信息路由处理
 classInfoManager.config(db);

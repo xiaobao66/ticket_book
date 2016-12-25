@@ -21,6 +21,11 @@
         "id": "ticket_city_manager",
         "title": "车票城市管理",
         "url": "html/ticket-city-manager.html"
+      },
+      {
+        "id": "ticket_book_manager",
+        "title": "车票设置管理",
+        "url": "html/ticket-book-manager.html"
       }
     ]
   }
