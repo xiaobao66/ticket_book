@@ -86,6 +86,33 @@ userInfoManager.post('/rest/user_info_manager_add', function (req, res) {
     });
 });
 
+//删除用户基本信息
+userInfoManager.post('/rest/user_info_manager_delete', function (req, res) {
+    var deleteUserInfoSql = "DELETE\n" +
+        "FROM\n" +
+        "	user_info\n" +
+        "WHERE\n" +
+        "	`id` IN ?";
+
+    var deleteData = JSON.parse(req.body.deleteData),
+        deleteId = [[]];
+
+    for (var i = 0, len = deleteData.length; i < len; i++) {
+        deleteId[0][i] = deleteData[i].id;
+    }
+
+    db.query(deleteUserInfoSql, [deleteId]).then(function (result, fields) {
+        res.json({
+            flag: 1
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
+});
+
 //修改用户信息(修改密码)
 userInfoManager.post('/rest/user_info_manager_edit', function (req, res) {
     var updateUserInfoSql = "UPDATE user_info\n" +

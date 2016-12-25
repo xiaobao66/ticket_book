@@ -17,12 +17,11 @@
        class="table table-striped table-hover" style="width: 100%;">
     <thead>
     <tr>
-        <th style="width: 5%;"><input type="checkbox" s-check-role="checkall-h"/></th>
-        <th style="width: 10%;">用户ID</th>
+        <th style="width: 10%;"><input type="checkbox" s-check-role="checkall-h"/></th>
         <th style="width: 15%;">姓名</th>
         <th style="width: 15%;">用户名</th>
         <th style="width: 15%;">密码</th>
-        <th style="width: 5%;">性别</th>
+        <th style="width: 10%;">性别</th>
         <th style="width: 15%;">手机号</th>
         <th style="width: 10%;">权限</th>
         <th style="width: 10%;text-align: center;">操作</th>
@@ -41,7 +40,7 @@
     </tr>
     <tr s-loop-role="row" s-check-role="i" s="datac,row">
         <td><input type="checkbox" s-check-role="h"/></td>
-        <td s="" s-data-filter="'id'" name="id"></td>
+        <td s="" s-data-filter="'id'" name="id" style="display: none"></td>
         <td s="" s-data-filter="'name'"></td>
         <td s="" s-data-filter="'username'" name="username"></td>
         <td s="" s-data-filter="'password'" name="password"></td>
@@ -104,27 +103,27 @@
 
     //删除用户信息
     function deleteUserInfo() {
-        var checkedData = teacherInfoGrid.getCheckedData();
+        var checkedData = userInfoGrid.getCheckedData();
         var deleteData = [];
 
         if (checkedData.length === 0) {
-            S.alert('请选择要删除的教师信息', 'warning');
+            S.alert('请选择要删除的用户', 'warning');
             return;
         }
 
         for (var i = 0; i < checkedData.length; i++) {
             deleteData[i] = {
-                teacher_id: checkedData[i]['teacher_id']
+                id: checkedData[i]['id']
             }
         }
 
-        S.confirm('确定要删除这些教师吗？').done(function () {
-            S.post('/rest/teacher_info_manager_delete', {deleteData: JSON.stringify(deleteData)}).done(function (rs) {
+        S.confirm('确定要删除这些用户吗？').done(function () {
+            S.post('/rest/user_info_manager_delete', {deleteData: JSON.stringify(deleteData)}).done(function (rs) {
                 if (rs.flag === 1) {
-                    S.alert('删除教师基本信息成功', 'success');
-                    teacherInfoGrid.refresh();
+                    S.alert('删除用户成功', 'success');
+                    userInfoGrid.refresh();
                 } else if (rs.flag === -1) {
-                    S.alert('删除教师基本信息失败，请重试', 'danger');
+                    S.alert('删除用户失败，请重试', 'danger');
                 }
             });
         });
