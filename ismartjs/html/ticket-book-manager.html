@@ -1,7 +1,7 @@
 <meta title="车票设置管理"/>
 <h3>车票设置管理</h3>
 <form class="form-inline" id="ticketBookManager" s="form"
-      s-form="{action: refreshTicketBook}" style="padding-top: 20px;">
+      s-form="{action: queryTicketBook}" style="padding-top: 20px;">
     <select s="select" id="departure" name="departure"
             s-build="S.get('rest/query_departure')"
             class="form-control" style="width: 120px;">
@@ -22,7 +22,7 @@
     <input type="button" class="btn btn-sm btn-danger" value="删除车票信息" s-click="deleteTicketBook()"/>
 </div>
 <table s="check,nda,datac" id="ticketBookGrid"
-       s-data="queryTicketBook()"
+       s-data="S.get('/rest/ticket_book_manager', S.N('#ticketBookManager').serialize())"
        class="table table-striped table-hover" style="width: 100%;">
     <thead>
     <tr>
@@ -77,15 +77,6 @@
     var ticketBookGrid = S.S('#ticketBookGrid');
 
     function queryTicketBook() {
-        var data = S.N('#ticketBookManager').serializeArray();
-        if(data[2].value) {
-            data[2].value += " 23:59:59";
-        }
-        data = jQuery.param(data);
-        return S.get('/rest/ticket_book_manager', data);
-    }
-
-    function refreshTicketBook() {
         S.N('#page').val(1);
         ticketBookGrid.refresh();
     }

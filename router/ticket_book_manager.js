@@ -86,8 +86,10 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
     }
 
     if (req.query.time) {
-        totalTicketSettingSql += ' AND ticket_setting.`time` <= "' + req.query.time + '"';
-        ticketSettingSql += ' AND ticket_setting.`time` <= "' + req.query.time + '"';
+        totalTicketSettingSql += ' AND ticket_setting.`time` >= "' + (req.query.time + " 00:00:00") + '"';
+        ticketSettingSql += ' AND ticket_setting.`time` >= "' + (req.query.time + " 00:00:00") + '"';
+        totalTicketSettingSql += ' AND ticket_setting.`time` <= "' + (req.query.time + " 23:59:59") + '"';
+        ticketSettingSql += ' AND ticket_setting.`time` <= "' + (req.query.time + " 23:59:59") + '"';
     }
 
     totalTicketSettingSql += ' ORDER BY ticket_id ASC';
