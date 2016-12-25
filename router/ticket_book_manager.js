@@ -64,7 +64,7 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
         "	destination destinationId,\n" +
         "	t1.cityName departure,\n" +
         "	t2.cityName destination,\n" +
-        "	DATE_FORMAT(`time`, '%Y-%m-%d %H:%I') `time`,\n" +
+        "	DATE_FORMAT(`time`, '%Y-%m-%d %H:%i') `time`,\n" +
         "	price,\n" +
         "	amount\n" +
         "FROM\n" +
@@ -118,6 +118,30 @@ ticketBookManager.get('/rest/ticket_book_manager', function (req, res) {
             res.json(data);
         })
     })
+});
+
+//新增车票信息
+ticketBookManager.post('/rest/ticket_book_manager_add', function (req, res) {
+    var insertTicketBookSql = "INSERT INTO ticket_setting (\n" +
+        "	departure,\n" +
+        "	destination,\n" +
+        "	`time`,\n" +
+        "	price,\n" +
+        "	amount\n" +
+        ")\n" +
+        "VALUES\n" +
+        "	(?,?,?,?,?)";
+
+    db.query(insertTicketBookSql, [req.body.departure, req.body.destination, req.body.time, req.body.price, req.body.amount]).then(function (result, fields) {
+        res.json({
+            flag: 1
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
 });
 
 module.exports = {

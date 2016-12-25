@@ -12,21 +12,27 @@
             class="form-control" style="width: 120px;">
         <option value="">目的地</option>
     </select>
-    <input type="text" class="form-control" name="time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
+    <input type="text" placeholder="出发日期" class="form-control" name="time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
     <input type="hidden" name="page" value="1" id="page"/>
     <input type="hidden" name="pageSize" value="20"/>
     <input type="submit" class="btn btn-success" value="查找"/>
 </form>
+<div class="s-ui-grid-action">
+    <input type="button" class="btn btn-sm btn-info" value="新增车票信息" s-click="addTicketBook()"/>
+    <input type="button" class="btn btn-sm btn-danger" value="删除车票信息" s-click="deleteTicketBook()"/>
+</div>
 <table s="check,nda,datac" id="ticketBookGrid"
        s-data="queryTicketBook()"
        class="table table-striped table-hover" style="width: 100%;">
     <thead>
     <tr>
-        <th style="width: 20%;">出发地</th>
-        <th style="width: 20%;">目的地</th>
+        <th style="width: 10%;"><input type="checkbox" s-check-role="checkall-h"/></th>
+        <th style="width: 15%;">出发地</th>
+        <th style="width: 15%;">目的地</th>
         <th style="width: 20%;">出发时间</th>
-        <th style="width: 20%;">票价(元)</th>
-        <th style="width: 20%;">剩余票数(张)</th>
+        <th style="width: 15%;">票价(元)</th>
+        <th style="width: 15%;">剩余票数(张)</th>
+        <th style="width: 10%;text-align: center;">操作</th>
     </tr>
     </thead>
     <tbody s="loop" s-data-filter="'results'">
@@ -40,7 +46,8 @@
             <div class="text-center" style="padding: 20px;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>
         </td>
     </tr>
-    <tr s-loop-role="row" s="datac,row">
+    <tr s-loop-role="row" s-check-role="i" s="datac,row">
+        <td><input type="checkbox" s-check-role="h"/></td>
         <td s="" s-data-filter="'ticket_id'" style="display: none;"></td>
         <td s="" s-data-filter="'departureId'" style="display: none;"></td>
         <td s="" s-data-filter="'departure'"></td>
@@ -49,6 +56,9 @@
         <td s="" s-data-filter="'time'"></td>
         <td s="" s-data-filter="'price'"></td>
         <td s="" s-data-filter="'amount'"></td>
+        <td class="text-right" style="text-align: center;">
+            <input type="button" class="btn btn-sm btn-info" s-click="editTicketBook(this)" value="编辑"/>
+        </td>
     </tr>
     </tbody>
     <tfoot>
@@ -78,5 +88,13 @@
     function refreshTicketBook() {
         S.N('#page').val(1);
         ticketBookGrid.refresh();
+    }
+
+    function addTicketBook() {
+        S.popupOpen('popup/ticket-book-manager-add.html').done(function (flag) {
+            if (flag) {
+                ticketBookGrid.refresh();
+            }
+        });
     }
 </script>

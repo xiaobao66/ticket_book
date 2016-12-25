@@ -1,0 +1,100 @@
+<meta title="新增车票信息" width="400px"/>
+<form class="form-horizontal"
+      id="ticketBookManagerForm"
+      s="form,valid" s-form="{action: submitTicketBookManagerForm}"
+      style="padding-top: 30px;">
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">出发地：</label>
+        <div class="col-sm-6">
+            <select s="select" id="departure" name="departure"
+                    s-build="S.get('rest/query_departure')"
+                    class="form-control" style="width: 120px;">
+                <option value="">出发地</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">目的地：</label>
+        <div class="col-sm-6">
+            <select s="select" id="destination" name="destination"
+                    s-build="S.get('rest/query_destination')"
+                    class="form-control" style="width: 120px;">
+                <option value="">目的地</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">开车时间：</label>
+        <div class="col-sm-6">
+            <input id="time" type="text" placeholder="开车时间" class="form-control" name="time" s="datetimepicker"
+                   s-datetimepicker="{minView:'hour', format:'yyyy-mm-dd hh:ii'}"/>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">票价：</label>
+        <div class="col-sm-6">
+            <input type="number" name="price" class="form-control"
+                   s-valid-label="票价"
+                   s-valid-error="require(),regex(/^\d+(\.\d{1,2})?$/)"
+                   s-valid-msg="{
+                        error: {
+                            regex: {
+                                '0': '票价格式不正确，小数点后保留2位'
+                            }
+                        }
+                   }"/>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">票数：</label>
+        <div class="col-sm-6">
+            <input type="number" name="amount" class="form-control"
+                   s-valid-label="票数"
+                   s-valid-error="require(),regex(/^\d+$/)"
+                   s-valid-msg="{
+                        error: {
+                            regex: {
+                                '0': '票数只能为整数'
+                            }
+                        }
+                   }"/>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    S.meta.btns = [
+        {
+            name: "保存",
+            style: "btn btn-primary",
+            click: function () {
+                if(S.N('#departure').val() == S.N('#destination').val()) {
+                    S.notice("出发地和目的地不能一样", "danger");
+                    return;
+                } else if(!S.N('#time').val()) {
+                    S.notice("开车时间不能为空", "danger");
+                    return;
+                }
+                return S.S("#ticketBookManagerForm").submit().done(function (rs) {
+                    if (rs.flag === 1) {
+                        S.close(true);
+                        S.notice("新增车票信息成功", "success");
+                    } else {
+                        S.close();
+                        S.notice("新增车票信息失败" + rs.err.code, "danger");
+                    }
+                });
+            }
+        },
+        {
+            name: "关闭",
+            style: "btn btn-default",
+            click: function () {
+                S.close();
+            }
+        }
+    ];
+
+    function submitTicketBookManagerForm(data) {
+        return S.post('/rest/ticket_book_manager_add', data);
+    }
+</script>
