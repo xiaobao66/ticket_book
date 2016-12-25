@@ -7,7 +7,6 @@ var login = require('./router/login');
 var teacherInfo = require('./router/teacher_info');
 var teacherWorkloadInfo = require('./router/teacher_workload_info');
 var teacherClassInfo = require('./router/teacher_class_info');
-var teacherInfoManager = require('./router/teacher_info_manager');
 var userInfoManager = require('./router/user_info_manager');
 var titleInfoManager = require('./router/title_info_manager');
 var teacherWorkloadInfoManager = require('./router/teacher_workload_info_manager');
@@ -65,10 +64,6 @@ teacherClassInfo.config(db);
 app.use('/', teacherClassInfo.teacherClassInfo);
 
 //超级管理员
-//教师基本信息路由处理
-teacherInfoManager.config(db);
-app.use('/', teacherInfoManager.teacherInfoManager);
-
 //用户信息路由处理
 userInfoManager.config(db);
 app.use('/', userInfoManager.userInfoManager);
