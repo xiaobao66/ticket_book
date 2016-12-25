@@ -61,6 +61,31 @@ userInfoManager.get('/rest/user_info_manager', function (req, res) {
     })
 });
 
+//新增用户信息
+userInfoManager.post('/rest/user_info_manager_add', function (req, res) {
+    var insertUserInfoSql = "INSERT INTO user_info (\n" +
+        "	username,\n" +
+        "	`password`,\n" +
+        "	`name`,\n" +
+        "	sex,\n" +
+        "	telephone,\n" +
+        "	flag\n" +
+        ")\n" +
+        "VALUES\n" +
+        "	(?,?,?,?,?,?)";
+
+    db.query(insertUserInfoSql, [req.body.username, '123456', req.body.name, req.body.sex, req.body.telephone, 0]).then(function (result, fields) {
+        res.json({
+            flag: 1
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
+});
+
 //修改用户信息(修改密码)
 userInfoManager.post('/rest/user_info_manager_edit', function (req, res) {
     var updateUserInfoSql = "UPDATE user_info\n" +

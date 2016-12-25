@@ -9,7 +9,8 @@
     <input type="submit" class="btn btn-success" value="查找"/>
 </form>
 <div class="s-ui-grid-action">
-    <input type="button" class="btn btn-sm btn-danger" value="删除教师信息" s-click="deleteUserInfo()"/>
+    <input type="button" class="btn btn-sm btn-info" value="新建用户信息" s-click="createUserInfo()"/>
+    <input type="button" class="btn btn-sm btn-danger" value="删除用户信息" s-click="deleteUserInfo()"/>
 </div>
 <table s="check,nda,datac" id="userInfoGrid"
        s-data="S.get('/rest/user_info_manager', S.N('#userInfoManager').serialize())"
@@ -83,6 +84,15 @@
     function queryUserInfo() {
         S.N('#page').val(1);
         userInfoGrid.refresh();
+    }
+
+    //新建用户信息
+    function createUserInfo() {
+        S.popupOpen('popup/user-info-manager-add.html').done(function (flag) {
+            if (flag) {
+                userInfoGrid.refresh();
+            }
+        });
     }
 
     //编辑用户信息
