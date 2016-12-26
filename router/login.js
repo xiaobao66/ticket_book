@@ -72,6 +72,49 @@ login.get('/rest/logout', function (req, res) {
     res.end('log out');
 });
 
+
+//用户注册
+login.post('/rest/register', function (req, res) {
+    var checkUsernameValidSql = "SELECT\n" +
+        "	COUNT(*) total\n" +
+        "FROM\n" +
+        "	user_info\n" +
+        "WHERE\n" +
+        "	username = ?";
+
+    var insertUserSql = "INSERT INTO user_info (\n" +
+        "	username,\n" +
+        "	`password`,\n" +
+        "	`name`,\n" +
+        "	sex,\n" +
+        "	telephone,\n" +
+        "	flag\n" +
+        ")\n" +
+        "VALUES\n" +
+        "	(?,?,?,?,?,?)";
+
+
+    db.query(checkUsernameValidSql, [req.body.username]).done(function (result, fields) {
+        if (result[0].total > 0) {
+            res.json({
+                flag: -1
+            });
+        } else {
+            db.query(insertUserSql, [req.body.username, req.body.password, req.body.name, req.body.sex, req.body.telephone, 0]).done(function (result, field) {
+                res.json({
+                    flag: 1
+                });
+            }, function (err) {
+                res.json({
+                    flag: -2,
+                    err: err
+                })
+            });
+        }
+    });
+
+});
+
 module.exports = {
     config: function (dbConfig) {
         db = dbConfig;

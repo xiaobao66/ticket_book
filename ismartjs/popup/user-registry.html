@@ -1,0 +1,90 @@
+<meta title="用户注册" width="400px"/>
+<form class="form-horizontal"
+      id="userRegistryForm"
+      s="form,valid" s-form="{action: submitUserRegistryForm}"
+      style="padding-top: 30px;">
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">用户名：</label>
+        <div class="col-sm-6">
+            <input type="text" name="username" class="form-control" placeholder="用户名"
+                   s-valid-label="用户名"
+                   s-valid-error="require()">
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">姓名：</label>
+        <div class="col-sm-6">
+            <input type="text" name="name" class="form-control" placeholder="姓名"
+                   s-valid-label="姓名"
+                   s-valid-error="require()">
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">性别：</label>
+        <div class="col-sm-6">
+            <select s="select" name="sex"
+                    class="form-control" s-valid-error="require()">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">联系方式：</label>
+        <div class="col-sm-6">
+            <input type="text" name="telephone" placeholder="联系方式" class="form-control"
+                   s-valid-label="联系方式"
+                   s-valid-error="require()"/>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">密码：</label>
+        <div class="col-sm-6">
+            <input type="password" name="password" class="form-control"
+                   s-valid-label="密码"
+                   s-valid-id="password"
+                   s-valid-error="require(),len(5,10)"/>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">确认密码：</label>
+        <div class="col-sm-6">
+            <input type="password" name="rePassword" class="form-control"
+                   s-data-filter="'password'"
+                   s-valid-label="确认密码"
+                   s-valid-error="require(),len(5,10),eq('password')"/>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    S.meta.btns = [
+        {
+            name: "保存",
+            style: "btn btn-primary",
+            click: function () {
+                return S.S("#userRegistryForm").submit().done(function (rs) {
+                    if (rs.flag === 1) {
+                        S.close(true);
+                        S.notice("注册成功", "success");
+                    } else if (rs.flag === -1) {
+                        S.notice('用户名已存在，请重新输入', 'danger');
+                    } else {
+                        S.close();
+                        S.notice("注册失败" + rs.err.code, "danger");
+                    }
+                });
+            }
+        },
+        {
+            name: "关闭",
+            style: "btn btn-default",
+            click: function () {
+                S.close();
+            }
+        }
+    ];
+
+    function submitUserRegistryForm(data) {
+        return S.post('/rest/register', data);
+    }
+</script>
