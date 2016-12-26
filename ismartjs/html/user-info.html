@@ -1,12 +1,16 @@
-<meta title="教师基本信息" args="teacherId,username"/>
-<h3>教师基本信息</h3>
+<meta title="用户基本信息" args="userId,username"/>
+<h3>用户基本信息</h3>
 <div style="width: 65%;margin: 0 auto;padding-top: 20px;">
     <table class="table table-striped table-hover table-bordered" style="width: 100%;font-size: 16px;">
-        <tbody s="tpl" s-data="S.get('/rest/teacher_info', {teacherId: teacherId})">
+        <tbody s="tpl" s-data="S.get('/rest/user_info', {id: userId})">
         <script type="text/template">
             <tr>
+                <td style="width: 50%;">用户名</td>
+                <td>{%= this.username %}</td>
+            </tr>
+            <tr>
                 <td style="width: 50%;">姓名</td>
-                <td>{%= this.teacher_name %}</td>
+                <td>{%= this.name %}</td>
             </tr>
             {%if(this.sex == 0){%}
             <tr>
@@ -20,14 +24,14 @@
             </tr>
             {%}%}
             <tr>
-                <td style="width: 50%;">学院</td>
-                <td>{%= this.college %}</td>
+                <td style="width: 50%;">联系方式</td>
+                <td>{%= this.telephone %}</td>
             </tr>
         </script>
         </tbody>
     </table>
 </div>
-<h3 style="padding-top: 20px;">教师账户密码变更</h3>
+<h3 style="padding-top: 20px;">账户密码变更</h3>
 <div style="width: 400px;margin: 0 auto;padding-top: 20px;">
     <form s="form,nda,datac,valid" s-form="{action: getFormData, done: formSubmitDone}" method="post"
           class="form-horizontal" id="accountForm" s-data="{username: username}" style="width: 100%">
@@ -67,6 +71,7 @@
 </div>
 
 <script type="text/javascript">
+    console.log(userId,username);
     function getFormData(data) {
         var username = S.N('#usernameInput').val();
         return S.post('/rest/password_change', {

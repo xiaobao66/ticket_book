@@ -1,42 +1,33 @@
 var express = require('express'),
-    teacherInfo = express.Router();
+    userInfo = express.Router();
 
 var db;
 
 //查询教师基本信息
-teacherInfo.get('/rest/teacher_info', function (req, res) {
-    var teacherInfoSql = "SELECT\n" +
-        "	teacher_info.`name` teacher_name,\n" +
-        "	sex,\n" +
-        "	college,\n" +
-        "	title_info.`name` title_name,\n" +
-        "	salary,\n" +
-        "	allowance\n" +
+userInfo.get('/rest/user_info', function (req, res) {
+    var userInfoSql = "SELECT\n" +
+        "	*\n" +
         "FROM\n" +
-        "	teacher_info,\n" +
-        "	title_info\n" +
+        "	user_info\n" +
         "WHERE\n" +
-        "	teacher_info.title_id = title_info.title_id\n" +
-        "AND teacher_info.teacher_id = ?";
+        "	`id` = ?";
 
-    db.query(teacherInfoSql, [req.query.teacherId]).done(function (result, fields) {
+    db.query(userInfoSql, [req.query.id]).done(function (result, fields) {
         if (result.length === 0) {
             res.json({});
         } else {
             res.json({
-                teacher_name: result[0]['teacher_name'],
+                username: result[0].username,
                 sex: result[0].sex,
-                college: result[0].college,
-                title_name: result[0]['title_name'],
-                salary: result[0].salary,
-                allowance: result[0].allowance
+                name: result[0].name,
+                telephone: result[0].telephone
             });
         }
     });
 });
 
 //修改账户密码
-teacherInfo.post('/rest/password_change', function (req, res) {
+userInfo.post('/rest/password_change', function (req, res) {
     var username = req.body.username,
         oldPassword = req.body.oldPassword,
         newPassword = req.body.newPassword;
@@ -47,7 +38,7 @@ teacherInfo.post('/rest/password_change', function (req, res) {
         "	user_info\n" +
         "WHERE\n" +
         "	username = ?\n" +
-        "AND PASSWORD = ?"
+        "AND `password` = ?"
 
     var updateAccountSql = "UPDATE user_info\n" +
         "SET `password` = ?\n" +
@@ -79,5 +70,5 @@ module.exports = {
     config: function (dbConfig) {
         db = dbConfig;
     },
-    teacherInfo: teacherInfo
+    userInfo: userInfo
 };

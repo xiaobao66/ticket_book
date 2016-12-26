@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser');
 
 //路由管理
 var login = require('./router/login');
-var teacherInfo = require('./router/teacher_info');
+var userInfo = require('./router/user_info');
 var teacherWorkloadInfo = require('./router/teacher_workload_info');
 var teacherClassInfo = require('./router/teacher_class_info');
 var userInfoManager = require('./router/user_info_manager');
@@ -51,9 +51,9 @@ app.use(function (req, res, next) {
 login.config(db);
 app.use('/', login.login);
 
-//教师基本信息路由处理
-teacherInfo.config(db);
-app.use('/', teacherInfo.teacherInfo);
+//用户基本信息路由处理
+userInfo.config(db);
+app.use('/', userInfo.userInfo);
 
 //教师工作量路由处理
 teacherWorkloadInfo.config(db);

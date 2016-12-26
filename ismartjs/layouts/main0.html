@@ -263,7 +263,7 @@
                 var needOpenMenus = [];
                 $.each(menus, function (i, menu) {
                     menu.args = {
-                        teacherId: Main.teacherId,
+                        userId: Main.userId,
                         username: Main.username
                     };
                     urlMapping[menu.url] = menu;
@@ -275,7 +275,7 @@
                     if (menu.children) {
                         $.each(menu.children, function (i, cm) {
                             cm.args = {
-                                teacherId: Main.teacherId,
+                                userId: Main.userId,
                                 username: Main.username
                             };
                             that.menuMapping[cm.id] = cm;
@@ -307,7 +307,7 @@
                         var menu = urlMapping[hash];
                         new MainTab(menu).add().active();
                     } else {
-                        openUrl(null, hash, {teacherId: Main.teacherId, username: Main.username});
+                        openUrl(null, hash, {userId: Main.userId, username: Main.username});
                     }
                 } else {
                     openMainTab && openMainTab.active();
