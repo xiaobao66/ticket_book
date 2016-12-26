@@ -1,7 +1,7 @@
-<meta title="用户车票预订" args="userId"/>
-<h3>用户车票预订</h3>
-<form class="form-inline" id="userTicketBook" s="form"
-      s-form="{action: queryUserTicketBook}" style="padding-top: 20px;">
+<meta title="用户订单管理" args="userId"/>
+<h3>用户订单管理</h3>
+<form class="form-inline" id="userTicketOrder" s="form"
+      s-form="{action: queryTicketOrder}" style="padding-top: 20px;">
     <select s="select" id="departure" name="departure"
             s-build="S.get('rest/query_departure')"
             class="form-control" style="width: 120px;">
@@ -16,10 +16,11 @@
     <input type="text" placeholder="出发日期" class="form-control" name="arrive_time" s="datetimepicker" s-datetimepicker="{minView:'month', format:'yyyy-mm-dd'}">
     <input type="hidden" name="page" value="1" id="page"/>
     <input type="hidden" name="pageSize" value="20"/>
+    <input type="hidden" s s-data="userId" name="userId">
     <input type="submit" class="btn btn-success" value="查找"/>
 </form>
-<table s="check,nda,datac" id="userTicketBookGrid"
-       s-data="S.get('/rest/ticket_book_manager', S.N('#userTicketBook').serialize())"
+<table s="check,nda,datac" id="userTicketOrderGrid"
+       s-data="S.get('/rest/user_ticket_order', S.N('#userTicketOrder').serialize())"
        class="table table-striped table-hover" style="width: 100%;">
     <thead>
     <tr>
@@ -30,7 +31,7 @@
         <th style="width: 15%;">到达时间</th>
         <th style="width: 10%;">票价(元)</th>
         <th style="width: 10%;">剩余票数(张)</th>
-        <th style="width: 10%;text-align: center;">操作</th>
+        <!--<th style="width: 10%;text-align: center;">操作</th>-->
     </tr>
     </thead>
     <tbody s="loop" s-data-filter="'results'">
@@ -55,16 +56,16 @@
         <td s="" s-data-filter="'arrive_time'"></td>
         <td s="" s-data-filter="'price'"></td>
         <td s="" s-data-filter="'amount'"></td>
-        <td class="text-right" style="text-align: center;">
-            <input type="button" class="btn btn-sm btn-info" s-click="userBookTicket(this)" value="预订"/>
-        </td>
+        <!--<td class="text-right" style="text-align: center;">-->
+        <!--<input type="button" class="btn btn-sm btn-info" s-click="userBookTicket(this)" value="预订"/>-->
+        <!--</td>-->
     </tr>
     </tbody>
     <tfoot>
     <tr>
         <td colspan="7" class="s-ui-pagination-wrapper">
             <ul s="pagination" id="userBillPagination"
-                s-pagination="{action:function(){S.N('#page').val(this); userTicketBookGrid.refresh()}}"
+                s-pagination="{action:function(){S.N('#page').val(this); userTicketOrderGrid.refresh()}}"
                 class="pagination pagination-sm pull-right" style="margin: 0">
             </ul>
             <div class="s-ui-pagination-info pull-right">共有<span name="total"></span>条记录</div>
@@ -73,32 +74,11 @@
     </tfoot>
 </table>
 <script type="text/javascript">
-    var userTicketBookGrid = S.S('#userTicketBookGrid');
+    var userTicketOrderGrid = S.S('#userTicketOrderGrid');
 
-    function queryUserTicketBook() {
+    function queryTicketOrder() {
         S.N('#page').val(1);
-        userTicketBookGrid.refresh();
+        userTicketOrderGrid.refresh();
     }
 
-    function userBookTicket(s) {
-        var data = s.parent().data(),
-            ticket_id = data.ticket_id,
-            amount = data.amount;
-
-        if(amount == 0) {
-            S.notice('没有余票，请更换其他车次', 'danger');
-            return;
-        }
-
-        S.post('/rest/user_ticket_book', {userId: userId, ticketId: ticket_id, amount: amount - 1}).done(function (rs) {
-            if(rs.flag == 1) {
-                S.alert('车票预订成功', 'success');
-                userTicketBookGrid.refresh();
-            } else if(rs.flag == -1) {
-                S.alert('已预订过当前车票，不能重复预订', 'danger');
-            } else if(rs.flag == -2) {
-                S.alert('预订失败，请重试');
-            }
-        });
-    }
 </script>

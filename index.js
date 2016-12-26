@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 //路由管理
 var login = require('./router/login');
 var userInfo = require('./router/user_info');
-var teacherClassInfo = require('./router/teacher_class_info');
 var userInfoManager = require('./router/user_info_manager');
 var ticketCityManager = require('./router/ticket_city_manager');
 var ticketBookManager = require('./router/ticket_book_manager');
 var userBookTicket = require('./router/user_book_ticket');
+var userTicketOrder = require('./router/user_ticket_order');
 
 var db = require('./lib/mysql').config(require('./db.config.js'));
 
@@ -57,9 +57,9 @@ app.use('/', userInfo.userInfo);
 userBookTicket.config(db);
 app.use('/', userBookTicket.userBookTicket);
 
-//教师上课信息路由处理
-teacherClassInfo.config(db);
-app.use('/', teacherClassInfo.teacherClassInfo);
+//用户订单信息路由处理
+userTicketOrder.config(db);
+app.use('/', userTicketOrder.userTicketOrder);
 
 //超级管理员
 //用户信息路由处理

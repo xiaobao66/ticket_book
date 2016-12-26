@@ -23,6 +23,12 @@
         "title": "用户车票预订",
         "icon": "fa fa-file",
         "url": "html/user-book-ticket.html"
+      },
+      {
+        "id": "user_ticket_order",
+        "title": "用户订单管理",
+        "icon": "fa fa-file",
+        "url": "html/user-ticket-order.html"
       }
     ]
   }
