@@ -5,13 +5,11 @@ var cookieParser = require('cookie-parser');
 //路由管理
 var login = require('./router/login');
 var userInfo = require('./router/user_info');
-var teacherWorkloadInfo = require('./router/teacher_workload_info');
 var teacherClassInfo = require('./router/teacher_class_info');
 var userInfoManager = require('./router/user_info_manager');
 var ticketCityManager = require('./router/ticket_city_manager');
 var ticketBookManager = require('./router/ticket_book_manager');
-var classInfoManager = require('./router/class_info_manager');
-var teacherTeachClassManager = require('./router/teacher_teach_class_manager');
+var userBookTicket = require('./router/user_book_ticket');
 
 var db = require('./lib/mysql').config(require('./db.config.js'));
 
@@ -55,9 +53,9 @@ app.use('/', login.login);
 userInfo.config(db);
 app.use('/', userInfo.userInfo);
 
-//教师工作量路由处理
-teacherWorkloadInfo.config(db);
-app.use('/', teacherWorkloadInfo.teacherWorloadInfo);
+//用户车票预订路由处理
+userBookTicket.config(db);
+app.use('/', userBookTicket.userBookTicket);
 
 //教师上课信息路由处理
 teacherClassInfo.config(db);
@@ -75,14 +73,6 @@ app.use('/', ticketCityManager.ticketCityManager);
 //车票信息路由处理
 ticketBookManager.config(db);
 app.use('/', ticketBookManager.ticketBookManager);
-
-//课程信息路由处理
-classInfoManager.config(db);
-app.use('/', classInfoManager.classInfoManager);
-
-//教师上课信息路由处理
-teacherTeachClassManager.config(db);
-app.use('/', teacherTeachClassManager.teacherTeachClassManager);
 
 //启动express服务器
 app.listen('3001', function () {

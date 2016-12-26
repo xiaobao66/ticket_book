@@ -12,5 +12,18 @@
         "open": true
       }
     ]
+  },
+  {
+    "id": "user_ticket_manager",
+    "title": "用户车票管理",
+    "icon": "fa fa-home",
+    "children": [
+      {
+        "id": "user_book_ticket",
+        "title": "用户车票预订",
+        "icon": "fa fa-file",
+        "url": "html/user-book-ticket.html"
+      }
+    ]
   }
 ]
