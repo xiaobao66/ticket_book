@@ -1,0 +1,70 @@
+<meta title="修改用户信息" width="400px" args="userInfo"/>
+<form class="form-horizontal"
+      id="userInfoForm"
+      s="form,valid,nda,datac" s-form="{action: submitUserInfoForm}"
+      s-data="userInfo"
+      style="padding-top: 30px;">
+    <div class="form-group">
+        <label class="col-sm-5 control-label">用户名：</label>
+        <div class="col-sm-6">
+            <span id="username" s s-data="userInfo.username"></span>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">姓名：</label>
+        <div class="col-sm-6">
+            <input type="text" name="name" class="form-control"
+                   s-valid-label="姓名"
+                   s-valid-error="require()">
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">性别：</label>
+        <div class="col-sm-6">
+            <select s="select" name="sex"
+                    class="form-control">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group" s-valid-role="item">
+        <label class="col-sm-5 control-label">联系方式：</label>
+        <div class="col-sm-6">
+            <input type="text" name="telephone" class="form-control"
+                   s-valid-label="联系方式"
+                   s-valid-error="require()"/>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    S.meta.btns = [
+        {
+            name: "保存",
+            style: "btn btn-primary",
+            click: function () {
+                return S.S("#userInfoForm").submit().done(function (rs) {
+                    if (rs.flag === 1) {
+                        S.close(rs.userInfo);
+                        S.notice("修改用户信息成功", "success");
+                    } else {
+                        S.close();
+                        S.notice("修改用户信息失败" + rs.err.code, "danger");
+                    }
+                });
+            }
+        },
+        {
+            name: "关闭",
+            style: "btn btn-default",
+            click: function () {
+                S.close();
+            }
+        }
+    ];
+
+    function submitUserInfoForm(data) {
+        data.username = S.N('#username').text();
+        return S.post('/rest/user_info_edit', data);
+    }
+</script>

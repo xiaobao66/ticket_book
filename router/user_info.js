@@ -66,6 +66,26 @@ userInfo.post('/rest/password_change', function (req, res) {
     });
 });
 
+//修改用户基本信息
+userInfo.post('/rest/user_info_edit', function (req, res) {
+    var updateUserInfoSql = "UPDATE user_info\n" +
+        "SET name = ?, sex = ?, telephone = ?\n" +
+        "WHERE\n" +
+        "	username = ?";
+
+    db.query(updateUserInfoSql, [req.body.name, req.body.sex, req.body.telephone, req.body.username]).then(function (result, fields) {
+        res.json({
+            flag: 1,
+            userInfo: req.body
+        });
+    }, function (err) {
+        res.json({
+            flag: -1,
+            err: err
+        })
+    });
+});
+
 module.exports = {
     config: function (dbConfig) {
         db = dbConfig;
