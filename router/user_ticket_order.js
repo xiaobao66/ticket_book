@@ -80,31 +80,42 @@ userTicketOrder.get('/rest/user_ticket_order', function (req, res) {
     };
 
     db.query(userTicketOrderSql, [req.query.userId]).done(function (result, fields) {
-        var ticketIdList = [[]];
-        for (var i = 0; i < result.length; i++) {
-            ticketIdList[0][i] = result[i]['ticket_id']
-        }
+        if (result.length === 0) {
+            data.total = 0;
+            data.results = [];
+            res.json(data);
+        } else {
+            var ticketIdList = [[]];
+            for (var i = 0; i < result.length; i++) {
+                ticketIdList[0][i] = result[i]['ticket_id']
+            }
 
-        db.query(totalTicketSettingSql, [ticketIdList]).then(function (result, fields) {
-            data.total = result[0].total;
-            db.query(ticketSettingSql, [ticketIdList]).then(function (result, fields) {
-                data.results = [];
-                for (var i = 0; i < result.length; i++) {
-                    data.results[i] = {
-                        ticket_id: result[i]['ticket_id'],
-                        departureId: result[i].departureId,
-                        destinationId: result[i].destinationId,
-                        departure: result[i].departure,
-                        destination: result[i]['destination'],
-                        departure_time: result[i]['departure_time'],
-                        arrive_time: result[i]['arrive_time'],
-                        price: result[i].price,
-                        amount: result[i].amount
-                    }
+            db.query(totalTicketSettingSql, [ticketIdList]).then(function (result, fields) {
+                data.total = result[0].total;
+                if (data.total === 0) {
+                    data.results = [];
+                    res.json(data);
+                } else {
+                    db.query(ticketSettingSql, [ticketIdList]).then(function (result, fields) {
+                        data.results = [];
+                        for (var i = 0; i < result.length; i++) {
+                            data.results[i] = {
+                                ticket_id: result[i]['ticket_id'],
+                                departureId: result[i].departureId,
+                                destinationId: result[i].destinationId,
+                                departure: result[i].departure,
+                                destination: result[i]['destination'],
+                                departure_time: result[i]['departure_time'],
+                                arrive_time: result[i]['arrive_time'],
+                                price: result[i].price,
+                                amount: result[i].amount
+                            }
+                        }
+                        res.json(data);
+                    });
                 }
-                res.json(data);
-            })
-        })
+            });
+        }
     });
 });
 
